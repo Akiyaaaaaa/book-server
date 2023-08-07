@@ -17,10 +17,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     
     List<Book> findByAuthorId(Long author);
     
-    @Query(value = "SELECT * FROM book a JOIN author b ON a.author_id = b.id WHERE CONCAT(b.first_name + ' ' + b.last_name) = :authorName", nativeQuery = true)
+    @Query(value = "SELECT * FROM book a JOIN author b ON a.author_id = b.id WHERE b.first_name = :authorName OR b.last_name = :authorName OR CONCAT(b.first_name + ' ' + b.last_name) LIKE :authorName", nativeQuery = true)
     List<Book> findByAuthor(@Param("authorName") String authorName);
     
-    @Query(value = "SELECT * FROM book a JOIN publisher b ON a.publisher_id = b.id WHERE b.name = :publisherName", nativeQuery = true)
+    @Query(value = "SELECT * FROM book a JOIN publisher b ON a.publisher_id = b.id WHERE b.publisher_name = :publisherName", nativeQuery = true)
     List<Book> findByPublisher(@Param("publisherName") String publisherName);
     
     @Query(value = "SELECT * FROM book b JOIN book_genre bg ON b.id = bg.book_id JOIN genre g ON bg.genre_id = g.id WHERE g.genre_name = :genreName", nativeQuery = true)

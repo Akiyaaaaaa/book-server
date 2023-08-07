@@ -32,6 +32,31 @@ public class BookService {
         return bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
     
+    public List<Book> getByAuthor(String authorName){
+        List<Book> books = bookRepository.findByAuthor(authorName);
+        if (books == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book(s) not found");
+        }
+        return books;
+    }
+    
+    public  List<Book> getByPublisher(String publisher){
+        List<Book> books = bookRepository.findByPublisher(publisher);
+        if (books == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book(s) not found");
+        }
+        return books;
+    }
+    
+    public List<Book> getByGenre(String genre){
+        List<Book> books = bookRepository.findByGenreName(genre);
+        if (books == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book(s) not found");
+        }
+        
+        return books;
+    }
+    
     public Book create(BookRequest bookRequest){
         if(bookRepository.existsByTitle(bookRequest.getTitle())){
             for (Book existBook : bookRepository.findByAuthorId(bookRequest.getAuthorId())){
